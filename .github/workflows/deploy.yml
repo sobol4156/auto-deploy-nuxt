@@ -36,12 +36,12 @@ jobs:
 
       - name: Copy files to the server
         run: |
-          scp -r ./.output/public/* root@45.142.36.179:/auto-deploy-nuxt
+          scp -r ./.output/public/* root@45.142.36.179:~/auto-deploy-nuxt
         env:
           SSH_PRIVATE_KEY: ${{ secrets.SECRET_AUTO_DEPLOY }}
 
       - name: Restart the server
         run: |
-          ssh root@45.142.36.179 "cd /auto-deploy-nuxt && pm2 restart app || npm run dev"
+          ssh root@45.142.36.179 "cd ~/auto-deploy-nuxt && pm2 restart app || npm run dev"
         env:
           SSH_PRIVATE_KEY: ${{ secrets.SECRET_AUTO_DEPLOY }}
