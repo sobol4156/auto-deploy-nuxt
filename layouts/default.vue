@@ -4,8 +4,8 @@
       <NuxtLink to="/">home</NuxtLink>
       <NuxtLink to="/second">second</NuxtLink>
     </header>
-    <div>
+    <main>
       <NuxtPage />
-    </div>
+    </main>
   </div>
 </template>
