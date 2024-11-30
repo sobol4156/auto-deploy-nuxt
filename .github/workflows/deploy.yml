@@ -3,7 +3,7 @@ name: Deploy to Server
 on:
   push:
     branches:
-      - dev
+      - dev  
 
 jobs:
   deploy:
@@ -11,18 +11,18 @@ jobs:
 
     steps:
       - name: Checkout code
-      uses: actions/checkout@v2
+        uses: actions/checkout@v2
 
       - name: Setup Node.js
-      uses: actions/setup-node@v2
-      with:
-        node-version: '16'
+        uses: actions/setup-node@v2
+        with:
+          node-version: '16'  
 
       - name: Install dependencies
-      run: npm install
+        run: npm install
 
       - name: Build the project
-      run: npm run build
+        run: npm run build
 
       - name: Setup SSH
         uses: webfactory/ssh-agent@v0.5.3
@@ -30,13 +30,13 @@ jobs:
           ssh-private-key: ${{ secrets.SECRET_AUTO_DEPLOY }}
 
       - name: Copy files to the server
-      run: |
-        scp -r ./* root@:45.142.36.179:/auto-deploy-nuxt
-      env:
-        SSH_PRIVATE_KEY: ${{ secrets.SECRET_AUTO_DEPLOY }}
+        run: |
+          scp -r ./dist/* root@45.142.36.179:/auto-deploy-nuxt  # Убедитесь, что путь к директории на сервере правильный
+        env:
+          SSH_PRIVATE_KEY: ${{ secrets.SECRET_AUTO_DEPLOY }}
 
-    - name: Restart the server (optional, depending on вашей конфигурации)
-      run: |
-        ssh root@45.142.36.179 "cd /auto-deploy-nuxt && pm2 restart app || npm run dev"
-      env:
-        SSH_PRIVATE_KEY: ${{ secrets.SECRET_AUTO_DEPLOY }}
+      - name: Restart the server (optional, depending on вашей конфигурации)
+        run: |
+          ssh root@45.142.36.179 "cd /auto-deploy-nuxt && pm2 restart app || npm run dev"  # Убедитесь, что ваш сервер использует pm2 и путь к приложению правильный
+        env:
+          SSH_PRIVATE_KEY: ${{ secrets.SECRET_AUTO_DEPLOY }}
