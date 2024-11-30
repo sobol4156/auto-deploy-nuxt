@@ -31,14 +31,8 @@ jobs:
           mkdir -p ~/.ssh
           ssh-keyscan -H 45.142.36.179 >> ~/.ssh/known_hosts
 
-      - name: Copy files to the server
+      - name: Pull latest changes on the server
         run: |
-          scp -r ./* root@45.142.36.179:~/auto-deploy-nuxt
-        env:
-          SSH_PRIVATE_KEY: ${{ secrets.SECRET_AUTO_DEPLOY }}
-
-      - name: Restart the server in dev mode
-        run: |
-          ssh root@45.142.36.179 "cd ~/auto-deploy-nuxt && npm install && npm run dev"
+          ssh root@45.142.36.179 "cd ~/auto-deploy-nuxt && git pull origin dev && npm install && npm run dev"
         env:
           SSH_PRIVATE_KEY: ${{ secrets.SECRET_AUTO_DEPLOY }}
