@@ -1,5 +1,5 @@
 <template>
   <div>
-    Роут /
+    Main Page
   </div>
 </template>
