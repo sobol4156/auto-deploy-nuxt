@@ -1,13 +1,12 @@
 version: '3.8'
 
 services:
-  nuxt-app:
+  app:
     build:
       context: .
       dockerfile: Dockerfile
     ports:
       - "3001:3001"
-    environment:
-      HOST: 0.0.0.0
-      PORT: 3001
-    restart: always
+    volumes:
+      - .:/app
+    command: npm run dev
