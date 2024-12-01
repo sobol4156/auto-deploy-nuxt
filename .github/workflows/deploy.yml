@@ -31,8 +31,14 @@ jobs:
           mkdir -p ~/.ssh
           ssh-keyscan -H 45.142.36.179 >> ~/.ssh/known_hosts
 
-      - name: Pull latest changes on the server
+      - name: Deploy to Server
         run: |
-          ssh root@45.142.36.179 "cd ~/auto-deploy-nuxt && git pull origin dev && npm install && npm run dev"
-        env:
-          SSH_PRIVATE_KEY: ${{ secrets.SECRET_AUTO_DEPLOY }}
+          ssh root@45.142.36.179 << 'EOF'
+          export NVM_DIR='/root/.nvm';
+          [ -s "$NVM_DIR/nvm.sh" ] && . "$NVM_DIR/nvm.sh";
+          cd ~/auto-deploy-nuxt;
+          git pull origin dev;
+          npm install --omit=dev;
+          npm run build;
+          pm2 restart auto-deploy-nuxt || pm2 start npm --name "auto-deploy-nuxt" -- run start -- --port 3001 --host 0.0.0.0;
+          EOF
