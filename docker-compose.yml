@@ -7,6 +7,9 @@ services:
       dockerfile: Dockerfile
     ports:
       - "3001:3001"
+    environment:
+      NODE_ENV: production
+    restart: always
     volumes:
       - .:/app
-    command: npm run dev
+      - /app/node_modules
