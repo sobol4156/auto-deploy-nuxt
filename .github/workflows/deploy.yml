@@ -29,3 +29,19 @@ jobs:
           file: ./Dockerfile
           push: true
           tags: sobol4156/nuxt:auto-deploy
+
+      - name: Deploy to Server
+        uses: appleboy/ssh-action@v1.0.3
+        with:
+          host: ${{ secrets.SERVER_IP}}
+          username: ${{ secrets.SERVER_USER}}
+          key: ${{ secrets.SECRET_AUTO_DEPLOY }}
+          port: 22
+          script: |
+            cd ~/auto-deploy-nuxt
+            docker login -u ${{ secrets.DOCKER_USERNAME }} -p ${{ secrets.DOCKER_PASSWORD }}
+            docker compose down --remove-orphans
+            docker network prune -f
+            docker container prune -f
+            docker compose pull
+            docker compose up -d
