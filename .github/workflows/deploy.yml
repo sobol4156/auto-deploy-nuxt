@@ -45,4 +45,4 @@ jobs:
             docker container prune -f
             docker compose pull
             docker compose up -d
-          command_timeout: 600
+          command_timeout: 10m
